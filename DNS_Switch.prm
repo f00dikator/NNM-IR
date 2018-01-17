@@ -1,0 +1,31 @@
+id=719999
+
+udp
+
+clientissue
+
+nooutput
+
+noplugin=1016
+noplugin=3703
+
+dport=53
+
+family=Generic
+
+name=DNS Server
+
+synopsis=N/A
+
+stripped_description=Find when a host switches DNS servers
+
+solution=N/A
+
+plugin_output=N/A
+
+risk=MEDIUM
+
+bmatch=>2:0100
+
+
+

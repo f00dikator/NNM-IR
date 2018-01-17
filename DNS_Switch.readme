@@ -1,0 +1,1 @@
+Just a simple PRM and PASL that watches the DNS servers used by all IPs on your monitored network. When a client makes a DNS server change, we report it in realtime mode.

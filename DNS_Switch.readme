@@ -1,4 +1,6 @@
-Just a simple PRM and PASL that watches the DNS servers used by all IPs on your monitored network. When a client makes a DNS server change, we report it in realtime mode.
+Just a simple PRM and PASL that watches the DNS servers used by all IPs on your monitored network. 
+When a client makes a DNS server change, we report it in realtime mode.
+Reports a medium for a generic DNS change. Reports a HIGH if the DNS server being connected to is associated with malware.
 
 To use:
 0) Just copy the .pasl to /opt/pvs/var/pvs/scripts folder. 

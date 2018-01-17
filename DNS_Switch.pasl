@@ -15,6 +15,9 @@ obj = object();
 obj.callback.add("DNSCallback");
 obj.filter.event.id.add(DNS_EVENT);
 
+MALWARE_IP[0] = "82.163.143.135";
+MALWARE_IP[1] = "82.163.142.137";
+
 function DNSCallback(obj)
 {
     local_var dns_server;
@@ -59,7 +62,18 @@ function check_server(s)
     }
 }
 
+function calc_risk(d)
+{
+    local_var i, ret;
+    ret = 3;
 
+    for (i=0; MALWARE_IP[i]; i++)
+    {
+        if (d == MALWARE_IP[i])
+            return 5;
+    }
+    return ret;
+}
 
 function dns_report(s)
 {
@@ -74,7 +88,17 @@ function dns_report(s)
     id = NEW_DNS_ID;
 
     protocol = obj.packet.ip.protocol();
-    risk = MEDIUM;
+
+    if (calc_risk(d:dst_ip) == 3)
+    {
+        risk = MEDIUM;
+    }
+    else
+    {
+        risk = HIGH;
+        plugin_output = string(plugin_output, "  ***WARNING*** The DNS server is associated with a specific malware campaign");
+    }
+
     seealso = "";
     family = "Generic";
     name = "New DNS Server Connection";

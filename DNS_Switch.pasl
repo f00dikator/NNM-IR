@@ -15,8 +15,8 @@ obj = object();
 obj.callback.add("DNSCallback");
 obj.filter.event.id.add(DNS_EVENT);
 
-MALWARE_IP[0] = "82.163.143.135";
-MALWARE_IP[1] = "82.163.142.137";
+MALWARE_IP[0] = "82.163.143.135"; MALWARE_DESC[0] = "MaMi";
+MALWARE_IP[1] = "82.163.142.137"; MALWARE_DESC[1] = "MaMi";
 
 function DNSCallback(obj)
 {
@@ -28,6 +28,18 @@ function DNSCallback(obj)
 }
 
 
+function compare_against_fbi_list(s)
+{
+    local_var regex, find_ip, ret;
+    ret = 0;
+
+    regex = "^(85\.255\.1(1[2-9]|2[0-7])|67.210\.([0-9]\.[0-9]+|1[0-5])|93\.188\.16[0-7]|77\.67\.83|213\.109\.(6[4-9]|7[0-9])|64\.28\.1(7[6-9]|8[0-9]|9[01]))\.[0-9]+";
+    find_ip = eregmatch(pattern:regex, string:s);
+    if (! isnull(find_ip))
+        ret = 1;
+
+    return ret;
+}
 
 
 function check_server(s)
@@ -64,21 +76,37 @@ function check_server(s)
 
 function calc_risk(d)
 {
-    local_var i, ret;
-    ret = 3;
+    local_var i, tmp, fbi;
+    tmp = make_list();
+    tmp[0] = 3;
+    tmp[1] = "N/A";
 
     for (i=0; MALWARE_IP[i]; i++)
     {
         if (d == MALWARE_IP[i])
-            return 5;
+        {
+            tmp[0] = 5;
+            tmp[1] = MALWARE_DESC[i];
+            return tmp;
+        }
     }
-    return ret;
+
+    fbi = compare_against_fbi_list(s:d);
+    if (fbi == 1)
+    {
+        tmp[0] = 5;
+        tmp[1] = "FBI malicious DNS Server list";
+    }
+
+    return tmp;
 }
+
+
 
 function dns_report(s)
 {
     local_var id , name, synopsis, description, plugin_output, realtime, src_port, solution, seealso;
-    local_var src_ip, bid, protocol, risk, cpe, family, cve, dst_ip;
+    local_var src_ip, bid, protocol, risk, cpe, family, cve, dst_ip, risk_tmp;
 
     src_ip = obj.event.src();
     dst_ip = obj.event.dst();
@@ -89,14 +117,15 @@ function dns_report(s)
 
     protocol = obj.packet.ip.protocol();
 
-    if (calc_risk(d:dst_ip) == 3)
+    risk_tmp = calc_risk(d:dst_ip);
+    if (risk_tmp[0] == 3)
     {
         risk = MEDIUM;
     }
     else
     {
         risk = HIGH;
-        plugin_output = string(plugin_output, "  ***WARNING*** The DNS server is associated with a specific malware campaign");
+        plugin_output = string(plugin_output, "  ***WARNING*** The DNS server is associated with a specific malware campaign - ", risk_tmp[1]);
     }
 
     seealso = "";

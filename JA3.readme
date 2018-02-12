@@ -1,0 +1,19 @@
+Just a simple PRM, PASL, and include file that watches the network for TLS CLIENTHELLO packets and calculates the JA3 hash of the client
+When we note a new JA3 hash on the network, we log it in realtime mode
+
+To use:
+0) Just copy the JA3.pasl to /opt/pvs/var/pvs/scripts folder. 
+1) Copy the JA3.inc to /opt/pvs/var/pvs/scripts folder.
+2) To be safe, run chattr +i /opt/pvs/var/pvs/scripts/JA3* (there's a bug that periodically deletes your pasl)
+2) Copy JA3.prm to /opt/pvs/var/pvs/plugins folder
+3) re-start pvs/pvs-proxy
+
+To test:
+cat /opt/pvs/var/pvs/log/realtime-logs.txt and find output like
+Feb 12 16:44:24 pvs: 192.168.254.1:0|40.77.16.143:53|6|7901|New TLS JA3 hash|The remote host has just initiated a TLS Client HELLO.|The newly observed JA3 hash was : 76467a20fd131a9ce696aed500ccb2ea|MEDIUM
+Feb 12 16:44:25 pvs: 192.168.254.1:0|93.184.215.201:53|6|7901|New TLS JA3 hash|The remote host has just initiated a TLS Client HELLO.|The newly observed JA3 hash was : eab2f66c1532eb543c4e37a916f0ef4c|MEDIUM
+Feb 12 16:45:34 pvs: 192.168.254.1:0|31.13.65.7:53|6|7901|New TLS JA3 hash|The remote host has just initiated a TLS Client HELLO.|The newly observed JA3 hash was : c0225b38e1a29efa4131763049593095 (Firefox Quantum 57.0.1)|MEDIUM
+Feb 12 16:45:37 pvs: 192.168.254.1:0|31.13.66.36:53|6|7901|New TLS JA3 hash|The remote host has just initiated a TLS Client HELLO.|The newly observed JA3 hash was : 23f1931037933c82062203f4fc61d1a6 (Firefox Quantum 57.0.1)|MEDIUM
+Feb 12 16:47:19 pvs: 192.168.254.1:0|172.217.11.142:53|6|7901|New TLS JA3 hash|The remote host has just initiated a TLS Client HELLO.|The newly observed JA3 hash was : f92abd08dd50fc1e902e9f3b43299acf|MEDIUM
+Feb 12 16:48:23 pvs: 192.168.254.1:0|31.13.65.7:53|6|7901|New TLS JA3 hash|The remote host has just initiated a TLS Client HELLO.|The newly observed JA3 hash was : bddda940f9963577c41d7c28b1a5f65f|MEDIUM
+

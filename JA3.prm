@@ -1,0 +1,28 @@
+id=719998
+
+clientissue
+
+realtime
+
+nooutput
+
+family=Generic
+
+name=TLS Client Hello
+
+synopsis=N/A
+
+stripped_description=Find TLS Client Hello
+
+solution=N/A
+
+plugin_output=N/A
+
+risk=INFO
+
+bmatch=>1603
+bmatch=>5:01
+bmatch=>9:03
+
+
+

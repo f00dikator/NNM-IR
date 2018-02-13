@@ -319,6 +319,7 @@ function ja3_report(s)
     src_port = 0;
     id = NEW_JA3_HASH;
     protocol = obj.packet.ip.protocol();
+    dport = obj.event.dport();
     risk = MEDIUM;
 
     seealso = "";
@@ -339,7 +340,7 @@ function ja3_report(s)
             src_ip:src_ip,
             src_port:src_port,
             dst_ip:dst_ip,
-            dst_port:53,
+            dst_port:dport,
             protocol:protocol,
             synopsis:synopsis,
             solution:solution,

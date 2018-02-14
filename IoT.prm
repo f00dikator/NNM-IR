@@ -1,0 +1,106 @@
+id=701997
+
+family=IoT
+
+name=GoAhead Webserver
+
+synopsis=The remote host is an IoT device.
+
+stripped_description=The remote host is running an embedded GoAhead Webserver. This is very typical behavior for IoT devices (cameras, thermostats, doorbells, etc.)
+
+solution=N/A
+
+plugin_output=N/A
+
+
+seealso=https://embedthis.com/goahead/
+
+risk=MEDIUM
+
+match=^Server: GoAhead
+
+
+NEXT
+
+id=701996
+
+sport=7547
+
+family=IoT
+
+name=TR-069 Server
+
+synopsis=The remote host is an IoT device.
+
+stripped_description=The remote host is running the TR-069 service. This is very typical behavior for IoT devices (cameras, thermostats, doorbells, etc.)
+
+solution=N/A
+
+plugin_output=N/A
+
+seealso=https://en.wikipedia.org/wiki/TR-069
+
+risk=MEDIUM
+
+pregex=^(([gG][eE][tT]|[pP][oO][sS][tT]) .*[hH][tT]{2}[pP].[0-9\.]+)
+pmatch=SOAP
+match=SOAP
+match=Envelope
+
+NEXT
+
+id=701995
+
+family=IoT
+
+clientissue
+
+nooutput
+realtime
+
+name=MQTT Client
+
+synopsis=The remote host is an IoT device.
+
+stripped_description=The remote host is running the MQTT service. This is very typical behavior for IoT devices (cameras, thermostats, doorbells, etc.)
+
+solution=N/A
+
+plugin_output=N/A
+
+seealso=https://en.wikipedia.org/wiki/MQTT
+
+risk=MEDIUM
+
+bmatch=>10
+
+
+NEXT
+
+id=701994
+
+family=IoT
+
+clientissue
+
+realtime
+
+nooutput
+
+name=MQTT Client
+
+synopsis=The remote host is an IoT device.
+
+stripped_description=The remote host is running the MQTT service. This is very typical behavior for IoT devices (cameras, thermostats, doorbells, etc.)
+
+solution=N/A
+
+plugin_output=N/A
+
+seealso=https://en.wikipedia.org/wiki/MQTT
+
+risk=MEDIUM
+
+bmatch=>10
+
+

@@ -1,0 +1,106 @@
+#
+# by John Lampe
+#
+
+PASL_VERSION = "1.0";
+
+# When a log() entry is made, the vulnerability will have this plugin ID.
+
+MQTT_client = 7903;
+
+# prm to subscribe to
+MQTT_1 = 701994;
+MQTT_2 = 701995;
+
+obj = object();
+obj.callback.add("MQTT");
+obj.filter.event.id.add(MQTT_1);
+obj.filter.event.id.add(MQTT_2);
+
+
+
+function MQTT(obj)
+{
+    local_var packet_data, data_sz, is_mqtt;
+
+    packet_data = obj.packet.data();
+    data_sz = strlen(packet_data);
+
+    if (data_sz > 4)
+    {
+        is_mqtt = parse_mqtt(pkt:packet_data);
+        if (1 == is_mqtt)
+            mqtt_report(pkt:packet_data);
+    }
+}
+
+
+function parse_mqtt(pkt)
+{
+    local_var ret = NULL;
+    local_var data_sz = strlen(pkt);
+
+    if ( (ord(pkt[0]) == 0x10) && (ord(pkt[1]) < 127) )
+    {
+        if ( (ord(pkt[1]) + 2) == data_sz)        
+            ret = 1;
+    }
+
+    return ret;
+}
+
+
+
+function mqtt_report(pkt) 
+{
+    local_var id , name, synopsis, description, plugin_output, realtime, src_port, solution, seealso;
+    local_var src_ip, bid, protocol, risk, cpe, family, cve, dst_ip, risk_tmp;
+
+    src_ip = obj.event.src();
+    dst_ip = obj.event.dst();
+
+    src_port = 0;
+    id = MQTT_client;
+    protocol = obj.packet.ip.protocol();
+    dport = obj.event.dport();
+    risk = INFO;
+
+    seealso = "http://mqtt.org/";
+    family = "IoT";
+    name = "MQTT Client Detection";
+    synopsis = string("The remote host is running the MQTT client protocol.");
+    description = string("MQTT is a common IoT protocol. We have just observed a connection packet");
+    plugin_output = hexstr(pkt);
+    realtime = YES;
+    bid = "";
+    nid = "";
+    cpe = "";
+    cve = "";
+    solution = "N/A";
+
+
+    obj.log(id:id,
+            name:name,
+            src_ip:src_ip,
+            src_port:src_port,
+            dst_ip:dst_ip,
+            dst_port:dport,
+            protocol:protocol,
+            synopsis:synopsis,
+            solution:solution,
+            seealso:seealso,
+            risk:risk,
+            cve:cve,
+            core:core,
+            cpe:cpe,
+            bid:bid,
+            description:description,
+            stripped_description:description,
+            plugin_output:plugin_output,
+            realtime:realtime,
+            family:family,
+            nid:nid,
+            version:PASL_VERSION);
+}
+
+

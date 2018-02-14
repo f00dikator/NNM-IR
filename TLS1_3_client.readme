@@ -1,0 +1,9 @@
+Just a simple PRM, and PASL, that watches the network for TLS CLIENTHELLO packets and determines when a client is using the TLS 1.3 protocol
+
+To use:
+0) Just copy the TLS1_3_client.pasl to /opt/pvs/var/pvs/scripts folder. 
+1) To be safe, run chattr +i /opt/pvs/var/pvs/scripts/TLS* (there's a bug that periodically deletes your pasl)
+2) Copy TLS1_3_client.prm to /opt/pvs/var/pvs/plugins folder
+3) re-start pvs/pvs-proxy
+
+

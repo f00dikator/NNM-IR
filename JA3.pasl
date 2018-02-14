@@ -120,7 +120,8 @@ function calculate_ja3(pkt)
         return ret;
 
     myptr = myptr + ord(pkt[myptr]) + 1; #we now point to start of cipher suite len
-    if (myptr >= (data_len+2))
+
+    if ( (myptr+2) >= data_len)
         return ret;
 
     cipher_len = (ord(pkt[myptr]) * 256) + ord(pkt[myptr+1]);

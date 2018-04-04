@@ -1,0 +1,28 @@
+id=719996
+
+clientissue
+
+realtime
+
+dport=853
+
+family=Generic
+
+name=Potential DNS over TLS Detected
+
+synopsis=The remote host may be tunnelling DNS requests
+
+stripped_description=NNM has detected a host issuing a TLS Client HELLO to port 853. This is indicative of a DNS-over-TLS request. 
+
+solution=Check the certificate of the remote server to gain a clue as to what may be going on here.
+
+plugin_output=N/A
+
+risk=INFO
+
+bmatch=>1603
+bmatch=>5:01
+bmatch=>9:03
+
+
+

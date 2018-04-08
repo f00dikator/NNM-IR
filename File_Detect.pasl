@@ -9,10 +9,12 @@ FILE_ID = 7904;
 
 # prm to subscribe to
 ZIP_FILE_EVENT = 719995;
+7z_FILE_EVENT = 719994;
 
 obj = object();
 obj.callback.add("FileCallback");
 obj.filter.event.id.add(ZIP_FILE_EVENT);
+obj.filter.event.id.add(7z_FILE_EVENT);
 
 
 function FileCallback(obj)
@@ -45,6 +47,11 @@ function parse_file(s)
             file_report(s:filename);
         }
         return ret;
+    }
+    else if (trigger_id == 7z_FILE_EVENT)
+    {
+        filename = string("7z compressed file: Unknown file name");
+        file_report(s:filename);
     }
     #put rest of cases in here
 } 

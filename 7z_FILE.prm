@@ -1,0 +1,25 @@
+id=719994
+
+nooutput
+
+realtime
+
+clientissue
+
+family=Generic
+
+name=7z file detection
+
+synopsis=The remote host has sent a 7z file
+
+stripped_description=The remote host has just sent a 7z file 
+
+solution=N/A
+
+plugin_output=N/A
+
+risk=INFO
+
+bmatch=377ABCAF271C
+
+

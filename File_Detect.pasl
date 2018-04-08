@@ -1,0 +1,156 @@
+#
+# by John Lampe
+#
+
+PASL_VERSION = "1.0";
+
+# When a log() entry is made, the vulnerability will have this plugin ID.
+FILE_ID = 7904;
+
+# prm to subscribe to
+ZIP_FILE_EVENT = 719995;
+
+obj = object();
+obj.callback.add("FileCallback");
+obj.filter.event.id.add(ZIP_FILE_EVENT);
+
+
+function FileCallback(obj)
+{
+    local_var packet_data, min_data_size;
+
+    min_data_size = 30;
+    packet_data = obj.packet.data();
+
+    if (strlen(packet_data) > min_data_size)
+        parse_file(s:packet_data);       
+}
+
+function parse_file(s)
+{
+    local_var trigger_id, filename;
+    local_var ret = NULL;
+
+    trigger_id = obj.event.id();
+    if (isnull(trigger_id))
+    {
+        return ret; 
+    }
+    else if (trigger_id == ZIP_FILE_EVENT)
+    {
+        filename = handle_zip(buf:s);
+        if (! isnull(filename))
+        {
+            filename = string("Zip file: ", filename);
+            file_report(s:filename);
+        }
+        return ret;
+    }
+    #put rest of cases in here
+} 
+
+function handle_zip(buf)
+{
+    local_var bmatch = raw_string(0x50, 0x4B, 0x03, 0x04);
+    local_var i,j, bufsize, ret, file_len, file_name;
+    ret = NULL;
+
+    bufsize = strlen(buf);
+    for (i=0; i <= (bufsize - 4); i++)
+    {
+        found = 0;
+        for (j=0; j<4; j++)
+        {
+            if (buf[i+j] == bmatch[j])
+                found++;
+        }
+        if (found == 4)
+        {
+            i += 26;
+            if ((i+5) > bufsize)
+                return ret; 
+            file_len = ord(buf[i]) + ord(buf[i+1]) * 256;
+            i += 4;
+            if ( (i + file_len) >= bufsize)
+                return ret;
+            for (j=0; j<file_len; j++)
+                file_name = string(file_name, buf[i+j]);
+            if (! isnull(printable(s:file_name)))
+                return file_name;
+            else
+                return ret;
+        }
+    } 
+}
+
+function printable(s)
+{
+    local_var i;
+    local_var ret = NULL;
+
+    for (i=0; i<strlen(s); i++)
+        if ( (ord(s[i]) < 0x20) || (ord(s[i]) >= 0x7f) )
+            return ret;
+
+    return 1;
+}
+
+
+
+
+function file_report(s)
+{
+    local_var id , name, synopsis, description, plugin_output, realtime, src_port, solution, seealso;
+    local_var src_ip, bid, protocol, risk, cpe, family, cve, dst_ip, risk_tmp, dport;
+
+    src_ip = obj.event.src();
+    dst_ip = obj.event.dst();
+    dport = obj.event.dport();
+
+    plugin_output = s;
+    src_port = 0;
+    id = FILE_ID;
+
+    protocol = obj.packet.ip.protocol();
+
+    risk = LOW;
+
+    seealso = "";
+    family = "Generic";
+    name = "File movement detection";
+    synopsis = string("The remote host has just sent a file");
+    description = string("The remote host has just initiated a file transfer to a remote host");
+    realtime = YES;
+    bid = "";
+    nid = "";
+    cpe = "";
+    cve = "";
+    solution = "N/A";
+
+
+    obj.log(id:id,
+            name:name,
+            src_ip:src_ip,
+            src_port:src_port,
+            dst_ip:dst_ip,
+            dst_port:dport,
+            protocol:protocol,
+            synopsis:synopsis,
+            solution:solution,
+            seealso:seealso,
+            risk:risk,
+            cve:cve,
+            core:core,
+            cpe:cpe,
+            bid:bid,
+            description:description,
+            stripped_description:description,
+            plugin_output:plugin_output,
+            realtime:realtime,
+            family:family,
+            nid:nid,
+            version:PASL_VERSION);
+}
+
+
+

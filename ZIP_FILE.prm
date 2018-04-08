@@ -1,0 +1,26 @@
+id=719995
+
+nooutput
+
+realtime
+
+clientissue
+
+family=Generic
+
+name=ZIP file detection
+
+synopsis=The remote host has sent a zip file
+
+stripped_description=The remote host has just sent a zip file 
+
+solution=N/A
+
+plugin_output=N/A
+
+risk=INFO
+
+bmatch=504B0304
+
+
+

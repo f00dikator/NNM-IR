@@ -9,12 +9,20 @@ FILE_ID = 7904;
 
 # prm to subscribe to
 ZIP_FILE_EVENT = 719995;
-7z_FILE_EVENT = 719994;
+SEVENZ_FILE_EVENT = 719994;
+PDF_FILE_EVENT = 719993;
+GZ_FILE_EVENT = 719992;
+COMPOUND_FILE_EVENT = 719991;
+BZ_FILE_EVENT = 719990;
 
 obj = object();
 obj.callback.add("FileCallback");
 obj.filter.event.id.add(ZIP_FILE_EVENT);
-obj.filter.event.id.add(7z_FILE_EVENT);
+obj.filter.event.id.add(SEVENZ_FILE_EVENT);
+obj.filter.event.id.add(PDF_FILE_EVENT);
+obj.filter.event.id.add(GZ_FILE_EVENT);
+obj.filter.event.id.add(COMPOUND_FILE_EVENT);
+obj.filter.event.id.add(BZ_FILE_EVENT);
 
 
 function FileCallback(obj)
@@ -48,9 +56,38 @@ function parse_file(s)
         }
         return ret;
     }
-    else if (trigger_id == 7z_FILE_EVENT)
+    else if (trigger_id == SEVENZ_FILE_EVENT)
     {
         filename = string("7z compressed file: Unknown file name");
+        file_report(s:filename);
+    }
+    else if (trigger_id == PDF_FILE_EVENT)
+    {
+        regex = "%PDF-[0-9]+\.[0-9]+";
+        find_pdf = eregmatch(pattern:regex, string:s);
+        if (! isnull(find_pdf))
+        {
+            filename = string("PDF file: Unknown file name");
+            file_report(s:filename);
+        }
+    }
+    else if (trigger_id == GZ_FILE_EVENT)
+    {
+        filename = handle_gz(buf:s);
+        if (! isnull(filename))
+        {
+            filename = string("GZ compressed file: Unknown file name");
+            file_report(s:filename);
+        }
+    }
+    else if (trigger_id == COMPOUND_FILE_EVENT)
+    {
+        filename = string("Compound File Binary Format file (common in old Microsoft Office files) : Unknown file name");
+        file_report(s:filename);
+    }
+    else if (trigger_id == BZ_FILE_EVENT)
+    {
+        filename = string("bz2 file : Unknown file name");
         file_report(s:filename);
     }
     #put rest of cases in here
@@ -88,6 +125,39 @@ function handle_zip(buf)
                 return ret;
         }
     } 
+}
+
+
+function handle_gz(buf)
+{
+    local_var bmatch = raw_string(0x1F, 0x8b, 0x08);
+    local_var i,j, bufsize, ret, file_len, file_name;
+    ret = NULL;
+
+    bufsize = strlen(buf);
+    for (i=0; i <= (bufsize - 3); i++)
+    {
+        found = 0;
+        for (j=0; j<3; j++)
+        {
+            if (buf[i+j] == bmatch[j])
+                found++;
+        }
+        if (found == 3)
+        {
+            #flags have to be < 32
+            #offset 9 is the OS...defined values 0-13 and 255
+            if ( (ord(buf[i+3]) < 32) &&
+                 ( (ord(buf[i+9]) <= 13) || (ord(buf[i+9]) == 255) ) )
+            {
+                return 1;
+            }
+            else
+            {
+                return ret;
+            }
+        }
+    }
 }
 
 function printable(s)

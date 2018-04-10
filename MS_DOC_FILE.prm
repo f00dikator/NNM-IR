@@ -1,0 +1,23 @@
+id=719991
+
+nooutput
+
+realtime
+
+clientissue
+
+family=Generic
+
+name=Compound File Binary Format file detection
+
+synopsis=The remote host has sent a Compound File Binary Format file (common with old .doc, .xls, etc.)
+
+stripped_description=The remote host has just sent a Compound File Binary Format file 
+
+solution=N/A
+
+plugin_output=N/A
+
+risk=INFO
+
+bmatch=D0CF11E0A1B11AE1

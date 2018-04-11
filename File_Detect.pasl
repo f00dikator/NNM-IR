@@ -197,7 +197,7 @@ function file_report(s)
     name = "File movement detection";
     synopsis = string("The remote host has just sent a file");
     description = string("The remote host has just initiated a file transfer to a remote host");
-    realtime = YES;
+    realtime = ONLY;
     bid = "";
     nid = "";
     cpe = "";

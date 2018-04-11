@@ -14,6 +14,8 @@ PDF_FILE_EVENT = 719993;
 GZ_FILE_EVENT = 719992;
 COMPOUND_FILE_EVENT = 719991;
 BZ_FILE_EVENT = 719990;
+TAR1_FILE_EVENT = 719989;
+TAR2_FILE_EVENT = 719988;
 
 obj = object();
 obj.callback.add("FileCallback");
@@ -23,6 +25,8 @@ obj.filter.event.id.add(PDF_FILE_EVENT);
 obj.filter.event.id.add(GZ_FILE_EVENT);
 obj.filter.event.id.add(COMPOUND_FILE_EVENT);
 obj.filter.event.id.add(BZ_FILE_EVENT);
+obj.filter.event.id.add(TAR1_FILE_EVENT);
+obj.filter.event.id.add(TAR2_FILE_EVENT);
 
 
 function FileCallback(obj)
@@ -90,8 +94,61 @@ function parse_file(s)
         filename = string("bz2 file : Unknown file name");
         file_report(s:filename);
     }
+    else if ( (trigger_id == TAR1_FILE_EVENT) || (trigger_id == TAR2_FILE_EVENT) )
+    {
+        filename = handle_tar(buf:s);
+        if (! isnull(filename))
+        {
+            filename = string("TAR file : ", filename);
+            file_report(s:filename);
+        }
+    }
     #put rest of cases in here
 } 
+
+
+
+function handle_tar(buf)
+{
+    local_var i,j, found,bmatch, done, ret,buflen, magic_string_offset;
+
+    ret = NULL;
+    magic_string_offset = 257;
+    bmatch = string("ustar");
+    buflen = strlen(buf);
+
+    for (i=0; i < (buflen - 5); i++)
+    {
+        found = 0; 
+        for (j=0; j<5; j++)
+        {
+            if (buf[i+j] == bmatch[j])
+                found++;
+        }   
+        if (found == 5)
+        {
+            i = i - magic_string_offset;
+            if (i >= 0)
+            {
+                done = 0;
+                ret = "";
+                while (done == 0)
+                {
+                    if (ord(buf[i]) == 0x00)
+                        done = 1;
+                    else
+                        ret = string(ret, buf[i]);
+                    i++;
+                }
+                if (strlen(ret) > 0)
+                    return ret;
+            }
+        }
+    }
+    return ret;
+}
+
+
 
 function handle_zip(buf)
 {

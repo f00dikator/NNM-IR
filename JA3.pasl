@@ -328,7 +328,7 @@ function ja3_report(s)
     name = "New TLS JA3 hash";
     synopsis = string("A new JA3 hash was observed on the network");
     description = string("The remote host has just initiated a TLS Client HELLO.");
-    realtime = YES;
+    realtime = ONLY;
     bid = "";
     nid = "";
     cpe = "";

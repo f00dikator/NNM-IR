@@ -1,0 +1,24 @@
+id=719989
+
+nooutput
+
+realtime
+
+clientissue
+
+family=Generic
+
+name=tar file detection
+
+synopsis=The remote host has sent a tar file
+
+stripped_description=The remote host has just sent a tar file 
+
+solution=N/A
+
+plugin_output=N/A
+
+risk=INFO
+
+bmatch=7573746172
+bmatch=7573746172003030

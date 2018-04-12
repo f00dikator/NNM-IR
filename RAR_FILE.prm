@@ -1,0 +1,23 @@
+id=719987
+
+nooutput
+
+realtime
+
+clientissue
+
+family=Generic
+
+name=RAR file detection
+
+synopsis=The remote host has sent a RAR file
+
+stripped_description=The remote host has just sent a RAR file 
+
+solution=N/A
+
+plugin_output=N/A
+
+risk=INFO
+
+bmatch=526172211A07

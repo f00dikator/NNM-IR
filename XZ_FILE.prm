@@ -1,0 +1,23 @@
+id=719986
+
+nooutput
+
+realtime
+
+clientissue
+
+family=Generic
+
+name=XZ file detection
+
+synopsis=The remote host has sent a XZ file
+
+stripped_description=The remote host has just sent a XZ file 
+
+solution=N/A
+
+plugin_output=N/A
+
+risk=INFO
+
+bmatch=FD377A585A0000

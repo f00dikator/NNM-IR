@@ -16,6 +16,8 @@ COMPOUND_FILE_EVENT = 719991;
 BZ_FILE_EVENT = 719990;
 TAR1_FILE_EVENT = 719989;
 TAR2_FILE_EVENT = 719988;
+RAR_FILE_EVENT = 719987;
+XZ_FILE_EVENT = 719986;
 
 obj = object();
 obj.callback.add("FileCallback");
@@ -27,7 +29,8 @@ obj.filter.event.id.add(COMPOUND_FILE_EVENT);
 obj.filter.event.id.add(BZ_FILE_EVENT);
 obj.filter.event.id.add(TAR1_FILE_EVENT);
 obj.filter.event.id.add(TAR2_FILE_EVENT);
-
+obj.filter.event.id.add(RAR_FILE_EVENT);
+obj.filter.event.id.add(XZ_FILE_EVENT);
 
 function FileCallback(obj)
 {
@@ -102,6 +105,16 @@ function parse_file(s)
             filename = string("TAR file : ", filename);
             file_report(s:filename);
         }
+    }
+    else if (trigger_id == RAR_FILE_EVENT)
+    {
+        filename = string("RAR file : Unknown file name");
+        file_report(s:filename);
+    }
+    else if (trigger_id == XZ_FILE_EVENT)
+    {
+        filename = string("XZ file : Unknown file name");
+        file_report(s:filename);
     }
     #put rest of cases in here
 } 

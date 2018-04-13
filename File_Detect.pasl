@@ -18,6 +18,9 @@ TAR1_FILE_EVENT = 719989;
 TAR2_FILE_EVENT = 719988;
 RAR_FILE_EVENT = 719987;
 XZ_FILE_EVENT = 719986;
+BITCOIN1_FILE_EVENT = 719985;
+BITCOIN2_FILE_EVENT = 719984;
+BITCOIN3_FILE_EVENT = 719983;
 
 obj = object();
 obj.callback.add("FileCallback");
@@ -31,6 +34,10 @@ obj.filter.event.id.add(TAR1_FILE_EVENT);
 obj.filter.event.id.add(TAR2_FILE_EVENT);
 obj.filter.event.id.add(RAR_FILE_EVENT);
 obj.filter.event.id.add(XZ_FILE_EVENT);
+obj.filter.event.id.add(BITCOIN1_FILE_EVENT);
+obj.filter.event.id.add(BITCOIN2_FILE_EVENT);
+obj.filter.event.id.add(BITCOIN3_FILE_EVENT);
+
 
 function FileCallback(obj)
 {
@@ -114,6 +121,11 @@ function parse_file(s)
     else if (trigger_id == XZ_FILE_EVENT)
     {
         filename = string("XZ file : Unknown file name");
+        file_report(s:filename);
+    }
+    else if ( (trigger_id == BITCOIN1_FILE_EVENT) || (trigger_id == BITCOIN2_FILE_EVENT) || (trigger_id == BITCOIN1_FILE_EVENT) )
+    {
+        filename = string("BitCoin Wallet file : Unknown file name");
         file_report(s:filename);
     }
     #put rest of cases in here

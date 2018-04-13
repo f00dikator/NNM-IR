@@ -1,0 +1,24 @@
+id=719985
+
+nooutput
+
+realtime
+
+clientissue
+
+family=Generic
+
+name=BitCoin file detection
+
+synopsis=The remote host has sent a BitCoin file
+
+stripped_description=The remote host has just sent a BitCoin file 
+
+solution=N/A
+
+plugin_output=N/A
+
+risk=INFO
+
+bmatch=000000006231050009000000002000000009000000000000
+

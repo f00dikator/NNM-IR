@@ -234,9 +234,9 @@ function handle_gz(buf)
         }
         if (found == 3)
         {
-            #flags have to be < 32
+            #flags have to be < 64
             #offset 9 is the OS...defined values 0-13 and 255
-            if ( (ord(buf[i+3]) < 32) &&
+            if ( (ord(buf[i+3]) < 64) &&
                  ( (ord(buf[i+9]) <= 13) || (ord(buf[i+9]) == 255) ) )
             {
                 return 1;

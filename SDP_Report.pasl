@@ -40,15 +40,21 @@ function parse_sdp(pkt)
     local_var ret = NULL;
     local_var line;
     local_var data_sz = strlen(pkt);
-    local_var sdp_regex = "^()=.*";
+    local_var sdp_regex = "^(v|o|s|i|u|e|p|c|b|t|r|z|k|a|m)=.*";
+    local_var timestamp_regex = "^t=[0-9]+ [0-9]+$";
+    timer_set = 0;
 
     foreach line ( split(pkt, sep:string("\n"), keep:FALSE) )
     {
         if (eregmatch(pattern:sdp_regex, string:line))
             ret = string(ret, line, "\n");
+        if (eregmatch(pattern:timestamp_regex, string:line))
+            timer_set += 1;
     }
-
-    return ret;
+    if (timer_set > 0)
+        return ret;
+    else
+        return NULL;
 }
 
 
